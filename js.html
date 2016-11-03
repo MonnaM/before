@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>随机产生人名</title>
+<style type="text/css">
+*{
+margin:0px;
+padding:0px;
+}
+.container{
+width:700px;
+height:auto;
+margin:0px auto;
+
+}
+.up{
+width:700px;
+height:160px;
+background-color:#366;
+
+}
+.down{
+width:700px;
+height:600px;
+background-color:#993;
+position:relative;
+}
+li{
+list-style:none;
+float:left;
+width:50px;
+text-align:center;
+background-color:#FF0;
+padding:5px;
+margin:5px;
+}
+span{
+display:block;
+padding:4px;
+width:80px;
+height:25px;
+background-color:#CF0;
+text-align:center;
+position:absolute;
+}
+.input{
+width:70px;
+height:25px;
+background-color:#FFF;
+border:none;
+text-align:center;
+margin-left:20px;
+
+ 
+
+}
+
+</style>
+<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+<script type="text/javascript" >
+$(document).ready(function(e) {
+//准备人名
+var stuName=["李萌","高雪薇","王路","杨佳","毛毛","高丽静","于云鹏","李小虎","常向阳","韩飞","薛晓松","小孩","李晓阳"];
+$(stuName).each(function(index, element) {
+//准备随机数，控制位置
+var num1=Math.random()*1000;
+var num2=Math.random()*1000;
+while(num1>612){//不能超出容器宽高
+num1=Math.random()*1000;
+}
+while(num2>567){
+num2=Math.random()*1000;
+}
+var color1=parseInt(Math.random()*256);//随机产生的颜色
+
+var color2=parseInt(Math.random()*256);
+
+var color3=parseInt(Math.random()*256);
+
+
+$("#down").append("<span style='left:"+num1+"px;top:"+num2+"px;background-color:rgb("+color1+","+color2+","+color3+")' >"+this+"</span>");
+});
+
+
+});
+var timer;
+//开始进行随机抽取
+function beginChou(){
+timer=setInterval(function(){//定义一个timer
+$("#down span").each(function(index, element) {
+var num1=Math.random()*1000;
+var num2=Math.random()*1000;
+while(num1>612){
+num1=Math.random()*1000;
+}
+while(num2>567){
+num2=Math.random()*1000;
+}
+$(this).animate({//让自己本身进行自定义动画
+left:num1+"px",
+top:num2+"px"
+},500);
+});
+
+},100);
+
+}
+//结束随机抽取
+function endChou(){
+clearInterval(timer);
+$("#down span").each(function(index, element) {
+$(this).stop(true);
+});
+var count=$("#down span").length;
+var ranChou;
+if(count>10){//判断你的数组长度是大于10还是100
+ranChou=Math.random()*100;
+while(ranChou>count){
+ranChou=Math.random()*100;
+}
+}
+ranChou=Math.random()*10;
+while(ranChou>count){
+ranChou=Math.random()*10;
+}
+ranChou=parseInt(ranChou);
+var spanUp=$("#down span")[ranChou];//获取你抽到的元素
+$("#mingdan").append("<li>"+$(spanUp).html()+"</li>");
+$("#down span")[ranChou].remove();//移除你抽到的元素
+}
+
+</script>
+</head>
+
+<body>
+<div class="container" id="container">
+<div id="up" class="up">
+<h3 style="float:left">抽奖人员名单</h3>
+<input class="input" type="button" value="开始" onclick="beginChou()" />
+<input class="input" type="button" value="结束" onclick="endChou()" />
+<ul style="margin-top:30px;" id="mingdan">
+
+</ul>
+</div>
+<div id="down" class="down">
+
+</div>
+</div>
+</body>
+</html>

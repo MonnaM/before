@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>360壁纸的动画效果</title>
+
+<script type="text/javascript" src="jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+/*str+="<img class='middleImg' style='left:-"+((widthNum-20)/2)+"px;top:-"+heightSmall+"px;' ";
+str+=" src="+imgSrc+" width="+widthNum+" height="+heightNum+" />";*/
+$(document).ready(function(e) {//窗体加载事件
+$(".div").each(function(index, element) {
+var heightNum=$(this).find("img").height();//获取img的高度
+var widthNum=$(this).find("img").width();//获取img的宽度
+var imgSrc=$(this).find("img").attr("src");//获取img的路径
+var imgStr="style='left:-"+((widthNum-20)/2)+"px;top:-"+heightSmall+"px;'";
+//这里所写的是你的图片中心到边界的那个高度
+var heightSmall=(heightNum)/2;
+/*
+坐标偏移量
+*/
+var widthSmall=(widthNum)/2;
+//定义了两个div 外层用于变模糊层，另一个内层用于使图片变到与遮罩图片大小相同 使用backgroundsize 是控制背景图片大小与遮罩图片相同 backgroundposition 是为了让扩大显示的图片与遮罩图片的位置相同 是两张图片的中心重合
+var str="<div class='outerClass' style='width:"+widthNum+"px;height:"+heightNum+"px;background-color:white;'>";
+str+="<div class='middleClass' style='left:"+widthSmall+"px;top:"+heightSmall+"px;background-image:url("+imgSrc+"); background-size:"+widthNum+"px "+heightNum+"px; background-repeat:no-repeat;background-position:-"+widthSmall+"px -"+heightSmall+"px'>";
+str+="</div></div>";
+var ele = $(str);
+ele.attr("h","333px");
+$(this).append(ele);
+});
+//使外层div块 进行循环 让它的模糊层透明度变小
+$(".outerClass").each(function(index, element) {
+$(this).animate({
+//opacity:0.
+},2000);
+});
+
+//是你的遮罩图片 扩大
+$(".middleClass").each(function(index, element) {
+//获取你父类的高度 也就是模糊层的高度
+var h=$(this).parent().height();
+var w=$(this).parent().width();
+//让你的背景图片进行扩大到与父类相同
+$(this).animate({
+"height":h+"px",
+"width":w+"px",
+"left":"0px",
+"top":"0px",
+"backgroundPosition":"0px"
+},1000,function(){//回调函数 让父类移除，然后自己移除
+$(this).parent().remove();
+$(this).remove();
+});
+});
+});
+</script>
+<style type="text/css">
+*{
+margin:0px;
+padding:0px;
+}
+.div{
+float:left;
+margin:5px;
+position:relative;
+
+}
+.outerClass{
+position:absolute;left:0px; top:0px; background-color:#CCC;
+}
+.middleClass{
+position:absolute;
+}
+.middleImg{
+position:relative;
+}
+</style>
+</head>
+
+<body style="position:absolute">
+<div class="div" >
+<img src="295368.jpg" width="540" height="333"/>
+</div>
+<div class="div">
+<img src="295373.jpg" width="367" height="228" />
+</div>
+<div class="div">
+<img src="288155.jpg" width="500" height="363" />
+</div>
+</body>
+</html>
